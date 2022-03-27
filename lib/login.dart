@@ -1,19 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonDecode;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatelessWidget {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   String email = '';
   String password = '';
+  String Api_Url = 'http://localhost:8000/api/login';
+  String data = '';
+
+  GlobalToast(massage, Color color1) {
+    return Fluttertoast.showToast(
+        msg: massage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: color1,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+  LogUser() async {
+    Object log = {
+      'email': email,
+      'password': password,
+    };
+    String Final_User = jsonEncode(log);
+
+    final Uri url = Uri.parse(Api_Url);
+    final http.Response response = await http.post(url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'supportsCredentials': 'true',
+          'allowedOrigins': '*',
+          'allowedOriginsPatterns': '',
+          'allowedHeaders': '*',
+          'allowedMethods': '*',
+        },
+        body: Final_User);
+
+    // Dispatch action depending upon
+    // the server response
+    if (response.statusCode == 200) {
+      GlobalToast('Successful logged in', Colors.green);
+    } else if (response.statusCode == 422) {
+      GlobalToast('Given data is invalid', Colors.red);
+    } else if (response.statusCode == 500) {
+      GlobalToast('Internal server error', Colors.orange);
+    } else if (response.statusCode == 400) {
+      GlobalToast('Bad request', Colors.yellow);
+    } else if (response.statusCode == 404) {
+      GlobalToast('404 not found', Colors.red);
+    } else if (response.statusCode == 401) {
+      GlobalToast('Unauthenticated', Colors.red);
+    } else if (response == []) {
+      GlobalToast('Duplicate data is entered ', Colors.red);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: Text("Sign In"),
-       
-        
       ),
       body: Column(
         children: [
@@ -111,6 +163,10 @@ class Login extends StatelessWidget {
                             ],
                           );
                         });
+                  } else {
+                    LogUser();
+                    email = '';
+                    password = '';
                   }
                 },
               ),
