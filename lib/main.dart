@@ -1,19 +1,17 @@
 import 'dart:js';
 
+import 'package:fishapp/FishManagement/AddFish.dart';
+import 'package:fishapp/FishManagement/showFishes.dart';
 import 'package:fishapp/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fishapp/login.dart';
 
 void main() {
-  runApp(MaterialApp(
-    
-    
-    routes: {
-    '/' :(context) => MyHomePage(title: 'hay'),
-    '/login': (context) => Login(),
-    '/register': (context) => Register()
-
-    
+  runApp(MaterialApp(routes: {
+    '/': (context) => Login(),
+    '/register': (context) => Register(),
+    '/addfish': (context) => AddFish(),
+    '/fish': (context) => ShowFishes(),
   }));
 }
 
@@ -38,7 +36,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Login(),
     );
   }
 }
