@@ -109,17 +109,115 @@ class PaymentRegister extends StatelessWidget {
             controller: firstNameController,
             decoration: InputDecoration(
                 labelText: 'First name',
-                prefixIcon: Icon(Icons.person rounded),
+                prefixIcon: Icon(Icons.people),
                 hintText: 'First name'),
           ),
         ),
-
+        //last name
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: lastNameController,
+            decoration: InputDecoration(
+                labelText: 'Last name',
+                prefixIcon: Icon(Icons.people),
+                hintText: 'Last name'),
+          ),
+        ),
+        //NIC
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: nicController,
+            decoration: InputDecoration(
+                labelText: 'National ID number',
+                prefixIcon: Icon(Icons.numbers),
+                hintText: 'National ID number'),
+          ),
+        ),
+        //DOB
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: dobController,
+            decoration: InputDecoration(
+                labelText: 'Date of Birth',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Date of Birth'),
+          ),
+        ),
+        //Address
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: addressController,
+            decoration: InputDecoration(
+                labelText: 'Address',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Address'),
+          ),
+        ),
+        //debit/credit Card name
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: cardNameController,
+            decoration: InputDecoration(
+                labelText: 'Card name',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Card name'),
+          ),
+        ),
+        //debit/credit Card number
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: cardNumberController,
+            decoration: InputDecoration(
+                labelText: 'Card number',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Card number'),
+          ),
+        ),
+        //CVC
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: cvcController,
+            decoration: InputDecoration(
+                labelText: 'CVC',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'CVC'),
+          ),
+        ),
+        //expMonth
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: expMonthController,
+            decoration: InputDecoration(
+                labelText: 'Exp month',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Exp month'),
+          ),
+        ),
+        //expMonth
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: TextField(
+            controller: expYearController,
+            decoration: InputDecoration(
+                labelText: 'Exp Year',
+                prefixIcon: Icon(Icons.password),
+                hintText: 'Exp Year'),
+          ),
+        ),
         // Button
         Padding(
           padding: EdgeInsets.all(16.0),
           child: FlatButton(
               child: Text(
-                'Sign Up',
+                'Add payment information',
                 style: TextStyle(
                   fontSize: 20.0,
                 ),
@@ -131,12 +229,13 @@ class PaymentRegister extends StatelessWidget {
               height: 40,
               textColor: Colors.white,
               onPressed: () {
-                name = nameController.text.toString();
-                email = emailController.text.toString();
-                password = passwordController.text.toString();
-                mobile = mobileController.text.toString();
-                password_confirmation =
-                passowrdconfirmController.text.toString();
+                firstName = firstNameController.text.toString();
+                lastName = lastNameController.text.toString();
+                nic = nicController.text.toString();
+                dob = dobController.text.toString();
+                address = addressController.text.toString();
+                cardName = cardNameController.text.toString();
+                cardNumber = cardNumberController.text.toString();
 
                 if (name.isEmpty) {
                   showDialog(
