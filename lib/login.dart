@@ -73,18 +73,25 @@ class Login extends StatelessWidget {
           Form(
               child: Column(
             children: <Widget>[
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.email),
+                  ),
                 ),
               ),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.password),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: TextField(
+                   obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.password),
+                  ),
                 ),
               ),
               FlatButton(

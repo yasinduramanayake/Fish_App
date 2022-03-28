@@ -1,19 +1,18 @@
 import 'dart:js';
 
-import 'package:fishapp/register.dart';
+import 'package:fishapp/AdminMenu.dart';
+import 'package:fishapp/Register.dart';
+import 'package:fishapp/UserMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:fishapp/login.dart';
 
 void main() {
-  runApp(MaterialApp(
-    
-    
-    routes: {
-    '/' :(context) => MyHomePage(title: 'hay'),
+  runApp(MaterialApp(routes: {
+    '/': (context) => MyHomePage(title: 'hay'),
     '/login': (context) => Login(),
-    '/register': (context) => Register()
-
-    
+    '/register': (context) => Register(),
+    '/Adminmenu': (context) => Adminmenu(),
+    '/menu': (context) => Usermenu()
   }));
 }
 

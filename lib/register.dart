@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonDecode;
+import 'package:localstorage/localstorage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Register extends StatelessWidget {
@@ -17,7 +19,7 @@ class Register extends StatelessWidget {
   String mobile = '';
   String password_confirmation = '';
   String Api_Url = 'http://localhost:8000/api/register';
-
+  final LocalStorage storage = new LocalStorage('localstorage_app');
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
         msg: massage,
@@ -30,6 +32,7 @@ class Register extends StatelessWidget {
   }
 
   createUser() async {
+    storage.setItem('name', 'Abolfazl');
     Object user = {
       'email': email,
       'password': password,
@@ -53,13 +56,15 @@ class Register extends StatelessWidget {
         body: Final_User);
 
     // Dispatch action depending upon
-    // the server response
+    // // the server response
+
+    print(storage.getItem('name'));
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);
     } else if (response.statusCode == 422) {
-      GlobalToast('Given data is invalid', Colors.red);
+      GlobalToast('Given data is invalid', Color.fromARGB(255, 236, 40, 26));
     } else if (response.statusCode == 500) {
-      GlobalToast('Internal server error', Colors.orange);
+      GlobalToast('Internal server error', Color.fromARGB(255, 255, 17, 0));
     } else if (response.statusCode == 400) {
       GlobalToast('Bad request', Colors.yellow);
     } else if (response.statusCode == 404) {
@@ -67,6 +72,10 @@ class Register extends StatelessWidget {
     } else if (response.statusCode == 401) {
       GlobalToast('Unauthenticated', Colors.red);
     }
+    email = password = ' ';
+    name = ' ';
+    password_confirmation = ' ';
+    mobile = ' ';
   }
 
   @override
@@ -341,10 +350,7 @@ class Register extends StatelessWidget {
                       });
                 } else {
                   this.createUser();
-                  email = '';
-                  password = '';
-                  name = '';
-                  mobile = '';
+
                   Navigator.pushNamed(context, '/login');
                 }
               }),
