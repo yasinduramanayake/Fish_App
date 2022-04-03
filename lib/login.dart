@@ -9,7 +9,7 @@ class Login extends StatelessWidget {
   TextEditingController passwordController = new TextEditingController();
   String email = '';
   String password = '';
-  String Api_Url = 'http://localhost:8000/api/login';
+  String Api_Url = 'http://localhost:8000/api';
   String data = '';
 
   GlobalToast(massage, Color color1) {
@@ -21,6 +21,12 @@ class Login extends StatelessWidget {
         backgroundColor: color1,
         textColor: Colors.white,
         fontSize: 16.0);
+  }
+
+  Profile() async {
+    final Uri url = Uri.parse(Api_Url);
+    final http.Response response = await http.post(url);
+    print(response.body);
   }
 
   LogUser() async {
@@ -79,6 +85,7 @@ class Login extends StatelessWidget {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
+                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
                 ),
@@ -86,10 +93,11 @@ class Login extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: TextField(
-                   obscureText: true,
+                  obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
+                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.password),
                   ),
                 ),

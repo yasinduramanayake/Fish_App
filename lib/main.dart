@@ -1,10 +1,12 @@
 import 'dart:js';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonDecode;
 import 'package:fishapp/AdminMenu.dart';
 import 'package:fishapp/Register.dart';
 import 'package:fishapp/UserMenu.dart';
 import 'package:fishapp/FishManagement/AddFish.dart';
-import 'package:fishapp/FishManagement/showFishes.dart';
+import 'package:fishapp/FishManagement/FishList.dart';
 import 'package:fishapp/paymentGateReg.dart';
 import 'package:flutter/material.dart';
 import 'package:fishapp/login.dart';
@@ -14,19 +16,24 @@ void main() {
     '/': (context) => Login(),
     '/register': (context) => Register(),
     '/addfish': (context) => AddFish(),
-    '/fish': (context) => ShowFishes(),
+    '/fishes' : (context) => FishList(),
     '/payregister': (context) => PaymentRegister(),
   }));
+
+  // Profile();
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
