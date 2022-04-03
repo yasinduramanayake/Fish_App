@@ -2,6 +2,8 @@ import 'dart:js';
 
 import 'package:fishapp/FishManagement/AddFish.dart';
 import 'package:fishapp/FishManagement/showFishes.dart';
+import 'package:fishapp/UserManagement/addUser.dart';
+import 'package:fishapp/UserManagement/usersList.dart';
 import 'package:fishapp/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fishapp/login.dart';
@@ -12,6 +14,8 @@ void main() {
     '/register': (context) => Register(),
     '/addfish': (context) => AddFish(),
     '/fish': (context) => ShowFishes(),
+    '/user': (context) => AddUser(),
+    '/users': (context) => UsersList(),
   }));
 }
 

@@ -30,7 +30,13 @@ class _ShowFishesState extends State<ShowFishes> {
             List<Fish>? posts = snapshot.data;
             return posts != null
                 ? FishList(
-                    fishes: [],
+                    fishes: [
+                      Fish(
+                          name: "aa",
+                          description: "aa",
+                          price: 120.0,
+                          image: 'aaaa'),
+                    ],
                   )
                 : const Text(
                     "Empty"); // new PostList(posts: posts) use without new
@@ -40,7 +46,8 @@ class _ShowFishesState extends State<ShowFishes> {
               child: Text('Error'),
             );
           } else {
-            return const CircularProgressIndicator();
+            return Text("error");
+            // const CircularProgressIndicator();
           }
         },
       ),

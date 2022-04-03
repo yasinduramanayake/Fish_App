@@ -11,6 +11,7 @@ class FishList extends StatelessWidget {
       return Card(
         elevation: 5,
         child: ListTile(
+          leading: Image.asset('aa'),
           title: Text(fishes[index].name),
           subtitle: Text(fishes[index].description),
         ),
