@@ -167,7 +167,7 @@ class AddUser extends StatelessWidget {
               ),
               FlatButton(
                 child: Text("Submit"),
-                color: Colors.blueAccent,
+                color: Color.fromARGB(255, 0, 24, 66),
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0))),
