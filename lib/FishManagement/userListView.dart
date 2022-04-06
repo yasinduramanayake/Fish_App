@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'package:fishapp/FishManagement/updatefish.dart';
+import 'package:fishapp/FishManagement/showfish.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fishapp/FishManagement/Fish.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
 
-class FishList extends StatefulWidget {
-  const FishList({Key? key}) : super(key: key);
+class UserFishList extends StatefulWidget {
+  const UserFishList({Key? key}) : super(key: key);
 
   @override
-  State<FishList> createState() => _FishListState();
+  State<UserFishList> createState() => _FishListState();
 }
 
-class _FishListState extends State<FishList> {
+class _FishListState extends State<UserFishList> {
   List<Fish> fishes = [];
   String Api_Url = 'http://localhost:8000/api/';
   Future<List<Fish>?> getUsersData() async {
@@ -91,50 +92,25 @@ class _FishListState extends State<FishList> {
                                 vertical: 8, horizontal: 8),
                             tileColor: Colors.greenAccent,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                                borderRadius: BorderRadius.circular(10)
+                                ),
                             title: Text(list[i].name),
                             subtitle: Text(list[i].name),
+                          trailing: Text(list[i].price.toString()),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShowFish(
+                                            name: list[i].name,
+                                            description: list[i].description,
+                                            id: list[i].id,
+                                            price: list[i].price,
+                                          )));
+                            },
                           ),
-                          endActionPane: ActionPane(
-                            motion: ScrollMotion(),
-                            // extentRatio: 0.5,
-                            children: [
-                              SlidableAction(
-                                onPressed: (context) {
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //         content:
-                                  //             Text('edit ${users[i].name}')));
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => UpdateFish(
-                                                name: list[i].name,
-                                                price: list[i].price,
-                                                id: list[i].id,
-                                                description: list[i].description,
-                                              )));
-                                },
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                icon: Icons.edit,
-                                label: 'Edit',
-                              ),
-                              SlidableAction(
-                                // flex: 2,
-                                onPressed: (context) {
-                                  this.delete(list[i].id);
-
-                                  Navigator.pushNamed(context, '/fishes');
-                                },
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
-                          ),
+                          
+                         
                         );
                       });
                 }

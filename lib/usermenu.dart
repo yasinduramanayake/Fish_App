@@ -10,24 +10,29 @@ class Usermenu extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: <Widget>[
+
+           ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text('All Fishes'),
+            onTap: () {
+              Navigator.pushNamed(context, '/userFishlist');
+            },
+          ),
           ListTile(
             leading: Icon(Icons.shopping_cart),
             title: Text('My cart'),
             onTap: () {
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/buyings');
             },
           ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-          ),
+          
+         
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('My Payments'),
+            onTap: (){
+                Navigator.pushNamed(context, '/payments');
+            },
           ),
         ],
       ),

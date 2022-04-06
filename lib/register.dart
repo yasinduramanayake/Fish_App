@@ -47,6 +47,7 @@ class Register extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+            'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -54,10 +55,8 @@ class Register extends StatelessWidget {
           'allowedMethods': '*',
         },
         body: Final_User);
-
     // Dispatch action depending upon
     // // the server response
-
     print(storage.getItem('name'));
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);

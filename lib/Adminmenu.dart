@@ -14,25 +14,18 @@ class Adminmenu extends StatelessWidget {
             leading: Icon(Icons.people),
             title: Text('Users'),
             onTap: () {
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/users');
             },
           ),
           ListTile(
             leading: Icon(Icons.water),
             title: Text('Fish Management'),
+            onTap: (){
+              Navigator.pushNamed(context, '/fishes');
+            },
           ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile'),
-          ),
-          ListTile(
-            leading: Icon(Icons.food_bank),
-            title: Text('Fish Food Mangement'),
-          ),
+          
+         
         ],
       ),
 

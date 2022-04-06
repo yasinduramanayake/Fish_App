@@ -40,6 +40,7 @@ class Login extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+            'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',

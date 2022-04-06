@@ -1,13 +1,19 @@
 import 'dart:js';
+
+import 'package:fishapp/Adminmenu.dart';
+import 'package:fishapp/FishManagement/userListView.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert' show jsonDecode;
-import 'package:fishapp/AdminMenu.dart';
-import 'package:fishapp/Register.dart';
-import 'package:fishapp/UserMenu.dart';
+import 'package:fishapp/Usermenu.dart';
 import 'package:fishapp/FishManagement/AddFish.dart';
+import 'package:fishapp/BuyingManagement/buyinglist.dart';
+import 'package:fishapp/Payment/paymentlist.dart';
+import 'package:fishapp/FishManagement/userListView.dart';
 import 'package:fishapp/FishManagement/FishList.dart';
-import 'package:fishapp/paymentGateReg.dart';
+import 'package:fishapp/UserManagement/addUser.dart';
+import 'package:fishapp/UserManagement/usersList.dart';
+import 'package:fishapp/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fishapp/login.dart';
 
@@ -16,8 +22,14 @@ void main() {
     '/': (context) => Login(),
     '/register': (context) => Register(),
     '/addfish': (context) => AddFish(),
-    '/fishes' : (context) => FishList(),
-    '/payregister': (context) => PaymentRegister(),
+    '/buyings': (context) => BuyingList(),
+     '/payments': (context) => PaymentList(),
+    '/fishes': (context) => FishList(),
+    'adminmenu' :(context) => Adminmenu(),
+    '/usermenu' :(cotext) => Usermenu(),
+    '/userFishlist': (context) => UserFishList(),
+    '/user': (context) => AddUser(),
+    '/users': (context) => UsersList(),
   }));
 
   // Profile();
