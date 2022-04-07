@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class Adminmenu extends StatelessWidget {
+  final LocalStorage storage = new LocalStorage('localstorage_app');
+  logout() {
+    storage.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +26,18 @@ class Adminmenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.water),
             title: Text('Fish Management'),
-            onTap: (){
+            onTap: () {
               Navigator.pushNamed(context, '/fishes');
             },
           ),
-          
-         
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () {
+              this.logout();
+              Navigator.pushNamed(context, '/');
+            },
+          ),
         ],
       ),
 

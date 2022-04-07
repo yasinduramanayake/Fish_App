@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
+import 'dart:convert';
+import 'package:localstorage/localstorage.dart';
 import 'dart:convert' show jsonDecode;
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -9,7 +11,8 @@ class Login extends StatelessWidget {
   TextEditingController passwordController = new TextEditingController();
   String email = '';
   String password = '';
-  String Api_Url = 'http://localhost:8000/api';
+  final LocalStorage storage = new LocalStorage('localstorage_app');
+  String Api_Url = 'http://localhost:8000/api/login';
   String data = '';
 
   GlobalToast(massage, Color color1) {
@@ -40,7 +43,7 @@ class Login extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -48,6 +51,13 @@ class Login extends StatelessWidget {
           'allowedMethods': '*',
         },
         body: Final_User);
+
+    var jsonbody = jsonDecode(response.body);
+
+    // res_email = jsonbody['data']['data'];
+    storage.setItem('name', jsonbody['data']['name']);
+    storage.setItem('email', jsonbody['data']['email']);
+    storage.setItem('role', jsonbody['data']['role']);
 
     // Dispatch action depending upon
     // the server response
@@ -86,7 +96,7 @@ class Login extends StatelessWidget {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                     border: OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
                   ),
                 ),
@@ -98,7 +108,7 @@ class Login extends StatelessWidget {
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                     border: OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.password),
                   ),
                 ),
@@ -183,6 +193,11 @@ class Login extends StatelessWidget {
                     LogUser();
                     email = '';
                     password = '';
+                    if (storage.getItem('role') == "user") {
+                      Navigator.pushNamed(context, '/usermenu');
+                    } else {
+                      Navigator.pushNamed(context, '/adminmenu');
+                    }
                   }
                 },
               ),

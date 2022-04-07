@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'dart:convert' show jsonEncode;
 import 'dart:convert' show jsonDecode;
-import 'package:localstorage/localstorage.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Register extends StatelessWidget {
@@ -19,7 +19,7 @@ class Register extends StatelessWidget {
   String mobile = '';
   String password_confirmation = '';
   String Api_Url = 'http://localhost:8000/api/register';
-  final LocalStorage storage = new LocalStorage('localstorage_app');
+ 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
         msg: massage,
@@ -32,7 +32,7 @@ class Register extends StatelessWidget {
   }
 
   createUser() async {
-    storage.setItem('name', 'Abolfazl');
+   
     Object user = {
       'email': email,
       'password': password,
@@ -57,7 +57,7 @@ class Register extends StatelessWidget {
         body: Final_User);
     // Dispatch action depending upon
     // // the server response
-    print(storage.getItem('name'));
+    // print(storage.getItem('name'));
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);
     } else if (response.statusCode == 422) {

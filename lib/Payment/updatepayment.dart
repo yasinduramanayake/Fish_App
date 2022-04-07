@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'dart:convert' show jsonEncode;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:localstorage/localstorage.dart';
 
 class UpdatePayment extends StatefulWidget {
   double amount = 0.00;
@@ -48,6 +49,7 @@ class _UpdatePaymentState extends State<UpdatePayment> {
   TextEditingController bankController = new TextEditingController(); //bank
   TextEditingController expYearController =
       new TextEditingController(); //exp year
+  final LocalStorage storage = new LocalStorage('localstorage_app');
 
   double amount = 0.00;
   String nic = '';
@@ -76,7 +78,7 @@ class _UpdatePaymentState extends State<UpdatePayment> {
   // create card
   updatePayment() async {
     Object payUser = {
-      'email': 'yasi@gmail.com',
+      'email': storage.getItem('email'),
       'nic': nic,
       'dob': dob,
       'address': address,
@@ -427,16 +429,7 @@ class _UpdatePaymentState extends State<UpdatePayment> {
                     });
               } else {
                 this.updatePayment();
-
-                addressController.clear();
-                cardNameController.clear();
-                cardNumberController.clear();
-                expMonthController.clear();
-                expYearController.clear();
-                dobController.clear();
-                nicController.clear();
-                bankController.clear();
-                cvcController.clear();
+                Navigator.pushNamed(context, '/payments');
               }
             }),
       ])),

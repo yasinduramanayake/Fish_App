@@ -67,6 +67,23 @@ class _UsersListState extends State<UsersList> {
         appBar: AppBar(
           title: Text('Users List'),
         ),
+        bottomNavigationBar: FlatButton(
+          onPressed: () {
+             Navigator.pushNamed(context, '/user');
+          },
+          child: Text(
+            "Add User",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // <-- Radius
+          ),
+          color: Colors.blueAccent,
+          height: 40,
+          textColor: Colors.white,
+        ),
         body: Container(
           //snapshot - data coming from the api
           child: FutureBuilder<List<User>?>(

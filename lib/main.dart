@@ -25,7 +25,7 @@ void main() {
     '/buyings': (context) => BuyingList(),
      '/payments': (context) => PaymentList(),
     '/fishes': (context) => FishList(),
-    'adminmenu' :(context) => Adminmenu(),
+    '/adminmenu' :(context) => Adminmenu(),
     '/usermenu' :(cotext) => Usermenu(),
     '/userFishlist': (context) => UserFishList(),
     '/user': (context) => AddUser(),

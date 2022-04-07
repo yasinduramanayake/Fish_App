@@ -12,12 +12,12 @@ class UpdateFish extends StatefulWidget {
   String description;
   double price;
 
-  UpdateFish(
-      {required this.name,
-      required this.description,
-      required this.id,
-      required this.price,
-      });
+  UpdateFish({
+    required this.name,
+    required this.description,
+    required this.id,
+    required this.price,
+  });
 
   //const UpdateUser({Key? key}) : super(key: key);
 
@@ -34,8 +34,8 @@ class _UpdateFishState extends State<UpdateFish> {
   late String id1;
   String name = '';
   String description = '';
-  String price= '';
-  String Api_Url = 'http://localhost:8000/api/updatefish/' ;
+  String price = '';
+  String Api_Url = 'http://localhost:8000/api/updatefish/';
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -60,7 +60,7 @@ class _UpdateFishState extends State<UpdateFish> {
     final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -145,7 +145,7 @@ class _UpdateFishState extends State<UpdateFish> {
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
-                       FilteringTextInputFormatter.allow(RegExp('[0-9.,]+'))
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.,]+'))
                       ],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -163,7 +163,7 @@ class _UpdateFishState extends State<UpdateFish> {
                     onPressed: () => {
                       name = nameController.text.toString(),
                       description = descriptionController.text.toString(),
-                      price =  priceController.text.toString(),
+                      price = priceController.text.toString(),
                       if (name.isEmpty)
                         {
                           showDialog(
@@ -219,10 +219,9 @@ class _UpdateFishState extends State<UpdateFish> {
                               })
                         }
                       else
-                       updateFish(),
-                      nameController.clear(),
-                      descriptionController.clear(),
-                      priceController.clear(),
+                        updateFish(),
+               
+                      Navigator.pushNamed(context, '/fishes')
                     },
                   ),
                 ],

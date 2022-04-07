@@ -198,6 +198,7 @@ class AddFish extends StatelessWidget {
                       fishnameController.clear(),
                       descriptionController.clear(),
                       priceController.clear(),
+                           Navigator.pushNamed(context, '/fishes')
                     },
                   ),
                 ],

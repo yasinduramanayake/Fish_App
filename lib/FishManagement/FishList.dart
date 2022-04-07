@@ -67,8 +67,26 @@ class _FishListState extends State<FishList> {
         appBar: AppBar(
           title: Text('Fish List'),
         ),
+        bottomNavigationBar: FlatButton(
+          onPressed: () {
+             Navigator.pushNamed(context, '/addfish');
+          },
+          child: Text(
+            "Add Fish",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12), // <-- Radius
+          ),
+          color: Colors.blueAccent,
+          height: 40,
+          textColor: Colors.white,
+        ),
         body: Container(
           //snapshot - data coming from the api
+
           child: FutureBuilder<List<Fish>?>(
               future: getUsersData(),
               builder: (context, snapshot) {
@@ -87,20 +105,26 @@ class _FishListState extends State<FishList> {
                         return Slidable(
                           key: ValueKey(i),
                           child: ListTile(
+                          
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 8),
                             tileColor: Colors.greenAccent,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             title: Text(list[i].name),
+                            
+                            
                             subtitle: Text(list[i].name),
                           ),
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),
                             // extentRatio: 0.5,
                             children: [
+                              
                               SlidableAction(
+                                
                                 onPressed: (context) {
+                              
                                   // ScaffoldMessenger.of(context).showSnackBar(
                                   //     SnackBar(
                                   //         content:
@@ -113,7 +137,8 @@ class _FishListState extends State<FishList> {
                                                 name: list[i].name,
                                                 price: list[i].price,
                                                 id: list[i].id,
-                                                description: list[i].description,
+                                                description:
+                                                    list[i].description,
                                               )));
                                 },
                                 backgroundColor: Colors.blue,

@@ -5,6 +5,7 @@ import 'package:fishapp/Payment/showpayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class PaymentList extends StatefulWidget {
   const PaymentList({Key? key}) : super(key: key);
@@ -15,9 +16,10 @@ class PaymentList extends StatefulWidget {
 
 class _PaymentListState extends State<PaymentList> {
   List<Payment> payments = [];
+   final LocalStorage storage = new LocalStorage('localstorage_app');
   String Api_Url = 'http://localhost:8000/api/';
   Future<List<Payment>?> getUsersData() async {
-    final Uri url = Uri.parse(Api_Url + 'payments');
+    final Uri url = Uri.parse(Api_Url + 'payments?filter[email] =${storage.getItem('email')}');
     final http.Response response = await http.get(url);
     var jsonData = jsonDecode(response.body);
     var data = jsonData['data']['data'];
@@ -104,6 +106,7 @@ class _PaymentListState extends State<PaymentList> {
                             subtitle: Text(list[i].address),
                             trailing: Text(list[i].price.toString()),
                             onTap: () {
+                               
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

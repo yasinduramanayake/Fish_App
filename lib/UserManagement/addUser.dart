@@ -89,7 +89,7 @@ class _AddUserState extends State<AddUser> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
+         
           Text(
             "Add User Form",
             style: TextStyle(fontSize: 30.0),

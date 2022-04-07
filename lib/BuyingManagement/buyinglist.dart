@@ -5,6 +5,7 @@ import 'package:fishapp/BuyingManagement/showbuying.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 
 class BuyingList extends StatefulWidget {
   const BuyingList({Key? key}) : super(key: key);
@@ -15,9 +16,11 @@ class BuyingList extends StatefulWidget {
 
 class _BuyingListState extends State<BuyingList> {
   List<Buying> buyings = [];
+  final LocalStorage storage = new LocalStorage('localstorage_app');
   String Api_Url = 'http://localhost:8000/api/';
   Future<List<Buying>?> getUsersData() async {
-    final Uri url = Uri.parse(Api_Url + 'buyings');
+    final Uri url = Uri.parse(
+        Api_Url + 'buyings?filter[user_email] = ${storage.getItem('email')}');
     final http.Response response = await http.get(url);
     var jsonData = jsonDecode(response.body);
     var data = jsonData['data']['data'];
@@ -96,6 +99,7 @@ class _BuyingListState extends State<BuyingList> {
                             subtitle: Text(list[i].name),
                             trailing: Text(list[i].price.toString()),
                             onTap: () {
+                            
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

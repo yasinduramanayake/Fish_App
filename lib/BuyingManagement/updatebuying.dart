@@ -7,6 +7,7 @@ import 'package:fishapp/Payment/paymentGateReg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:localstorage/localstorage.dart';
 import 'dart:convert';
 
 class UpdateBuy extends StatefulWidget {
@@ -32,6 +33,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
   TextEditingController fishnameController = new TextEditingController();
   TextEditingController quantityController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
+      final LocalStorage storage = new LocalStorage('localstorage_app');
   // late File _image;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
@@ -57,7 +59,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
       'fish_name': name,
       'quantity': quantity,
       'price': price,
-      'user_email': 'yasi@gmail.com'
+      'user_email':   storage.getItem('email')
     };
     String Final_Fish = jsonEncode(update);
 
