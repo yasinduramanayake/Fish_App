@@ -1,43 +1,59 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert';
 import 'dart:convert' show jsonDecode;
+import 'package:fishapp/Payment/paymentGateReg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
-class AddFish extends StatelessWidget {
+class AddBuy extends StatefulWidget {
+  double price = 0.00;
+  String name = '';
+
+  AddBuy({
+    required this.price,
+    required this.name,
+  });
+
+  //const UpdateUser({Key? key}) : super(key: key);
+
+  @override
+  _AddBuyState createState() => _AddBuyState();
+}
+
+class _AddBuyState extends State<AddBuy> {
   @override
   TextEditingController fishnameController = new TextEditingController();
-  TextEditingController descriptionController = new TextEditingController();
+  TextEditingController quantityController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   // late File _image;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
   String name = '';
-  String description = '';
-  String Api_Url = 'http://127.0.0.1:8000/api/addfish';
+  String quantity = '';
+  String Api_Url = 'http://127.0.0.1:8000/api/addbuy';
   String price = '';
 
-  GlobalToast(massage, Color color1) {
+  GlobalToast(massage, Color color) {
     return Fluttertoast.showToast(
         msg: massage,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        backgroundColor: color1,
+        backgroundColor: color,
         textColor: Colors.white,
         fontSize: 16.0);
   }
 
   Add() async {
     Object add = {
-      'name': name,
-      'description': description,
+      'fish_name': name,
+      'quantity': quantity,
       'price': price,
+      'user_email': 'yasi@gmail.com'
     };
     String Final_Fish = jsonEncode(add);
 
@@ -46,6 +62,7 @@ class AddFish extends StatelessWidget {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'supportsCredentials': 'true',
+          'accept': 'application/json',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
           'allowedHeaders': '*',
@@ -72,33 +89,30 @@ class AddFish extends StatelessWidget {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      priceController.text = widget.price.toString();
+      fishnameController.text = widget.name.toString();
+    });
+  }
+
   // const AddFish({ Key? key }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add Fish Details",
+          "Add Buying Details",
         ),
       ),
       body: Column(
         children: <Widget>[
-          ClipPath(
-            clipper: OvalBottomBorderClipper(),
-            child: Container(
-              height: 140,
-              color: Colors.blue,
-              child: Center(
-                child: Text("Fish Details Form",
-                    style: TextStyle(
-                        fontSize: 40.0,
-                        fontFamily: 'Lobster',
-                        color: Colors.white)),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 50,
+          SizedBox(height: 10),
+          Text(
+            "Buy Now",
+            style: TextStyle(fontSize: 30.0),
           ),
           Form(
               key: formKey,
@@ -108,6 +122,7 @@ class AddFish extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
                       controller: fishnameController,
+                      readOnly: true,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Fish Name',
@@ -115,28 +130,24 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
-                      maxLines: 7,
-                      controller: descriptionController,
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Description',
+                        labelText: 'Quantity',
                         prefixIcon: Icon(Icons.description),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
                       controller: priceController,
+                      readOnly: true,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
@@ -149,21 +160,15 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   FlatButton(
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 30.0),
-                    ),
+                    child: Text("Submit"),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     onPressed: () => {
                       name = fishnameController.text.toString(),
-                      description = descriptionController.text.toString(),
+                      quantity = quantityController.text.toString(),
                       price = priceController.text.toString(),
                       if (name.isEmpty)
                         {
@@ -183,14 +188,14 @@ class AddFish extends StatelessWidget {
                                 );
                               })
                         }
-                      else if (description.isEmpty)
+                      else if (quantity.isEmpty)
                         {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('ERROR'),
-                                  content: Text('Name feild is required'),
+                                  content: Text('Quantity feild is required'),
                                   actions: <Widget>[
                                     FlatButton(
                                         onPressed: () {
@@ -221,9 +226,13 @@ class AddFish extends StatelessWidget {
                         }
                       else
                         Add(),
-                      fishnameController.clear(),
-                      descriptionController.clear(),
-                      priceController.clear(),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddPayment(
+                                    price: double.parse(price),
+                                  ))),
+                      quantityController.clear(),
                     },
                   ),
                 ],

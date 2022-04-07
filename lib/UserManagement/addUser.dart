@@ -1,24 +1,32 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 
-class AddUser extends StatelessWidget {
-  TextEditingController firstNameController = new TextEditingController();
-  TextEditingController lastNameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController confirmPasswordController = new TextEditingController();
+class AddUser extends StatefulWidget {
+  const AddUser({Key? key}) : super(key: key);
 
-  //const AddUser({ Key? key }) : super(key: key);
-  String firstname = '';
-  String lastname = '';
-  String username = '';
+  @override
+  _AddUserState createState() => _AddUserState();
+}
+
+class _AddUserState extends State<AddUser> {
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
+  TextEditingController mobileController = new TextEditingController();
+  TextEditingController passowrdconfirmController = new TextEditingController();
+
+  String _selectedGender = 'Admin';
+  String email = '';
   String password = '';
-  String confirmPassword = '';
-  String Api_Url = 'http://localhost:8000/api/register';
+  String name = '';
+  String mobile = '';
+  String password_confirmation = '';
+  String Api_Url = 'http://localhost:8000/api/adduser';
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -33,11 +41,12 @@ class AddUser extends StatelessWidget {
 
   addUser() async {
     Object user = {
-      'firstname': firstname,
-      'lastname': lastname,
+      'email': email,
       'password': password,
-      'username': username,
-      'confirmPassword': 'confirmPassword',
+      'mobile': mobile,
+      'name': name,
+      'role': _selectedGender,
+      'password_confirmation': password_confirmation
     };
     String Final_User = jsonEncode(user);
 
@@ -45,6 +54,7 @@ class AddUser extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -80,43 +90,27 @@ class AddUser extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            "Add User Form",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 50,
+              color: Colors.blue,
+            ),
           ),
+          SizedBox(height: 10),
           Form(
               child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'First Name',
-                    prefixIcon: Icon(Icons.edit),
-                  ),
-                ),
+              SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  controller: lastNameController,
+                  controller: nameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Last Name',
-                    prefixIcon: Icon(Icons.edit),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
+                    labelText: 'Name',
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
@@ -124,6 +118,34 @@ class AddUser extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                    prefixIcon: Icon(Icons.edit),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                // mobile
+                child: TextField(
+                  controller: mobileController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Mobile',
+                      prefixIcon: Icon(Icons.phone),
+                      hintText: 'Enter Mobile'),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -132,10 +154,12 @@ class AddUser extends StatelessWidget {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  controller: confirmPasswordController,
+                  obscureText: true,
+                  controller: passowrdconfirmController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Confirm Password',
@@ -144,165 +168,235 @@ class AddUser extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.price_change),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "please enter the title";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              // ignore: deprecated_member_use
-              SizedBox(
-                height: 20,
-              ),
-              FlatButton(
-                child: Text("Submit"),
-                color: Color.fromARGB(255, 0, 24, 66),
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                onPressed: () {
-                  firstname = firstNameController.text.toString();
-                  lastname = lastNameController.text.toString();
-                  password = passwordController.text.toString();
-                  username = usernameController.text.toString();
-                  confirmPassword = confirmPasswordController.text.toString();
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      const Text('Select the Role:'),
+                      ListTile(
+                        leading: Radio<String>(
+                          value: 'Admin',
+                          groupValue: _selectedGender,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGender = value!;
+                            });
+                          },
+                        ),
+                        title: const Text('Admin'),
+                      ),
+                      ListTile(
+                        leading: Radio<String>(
+                          value: 'User',
+                          groupValue: _selectedGender,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedGender = value!;
+                            });
+                          },
+                        ),
+                        title: const Text('User'),
+                      ),
+                    ],
+                  )),
 
-                  if (firstname.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('First Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (lastname.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Last Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (username.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Username feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (password.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Last Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (confirmPassword.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Confirm Password feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (confirmPassword != password) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text(
-                              'Password not match',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  }
-                },
-              )
+              // ignore: deprecated_member_use
+
+              FlatButton(
+                  child: Text("Submit"),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  onPressed: () {
+                    name = nameController.text.toString();
+                    email = emailController.text.toString();
+                    password = passwordController.text.toString();
+                    mobile = mobileController.text.toString();
+                    password_confirmation =
+                        passowrdconfirmController.text.toString();
+
+                    if (name.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text('Name feild is required',
+                                  style: TextStyle(color: Colors.red)),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (email.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text('Email feild is required',
+                                  style: TextStyle(color: Colors.red)),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (!email.contains('@')) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter a valid email address',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (password.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter a valid password',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (password.length < 6) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter password with minimum 6 characters',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (password_confirmation != password) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Password not match',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (mobile.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'mobile feild is required',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'OK',
+                                    ))
+                              ],
+                            );
+                          });
+                    } else if (mobile.length > 10 || mobile.length < 10) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter valid numbers length',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'OK',
+                                    ))
+                              ],
+                            );
+                          });
+                    } else {
+                      this.addUser();
+
+                      Navigator.pushNamed(context, '/users');
+                    }
+                  })
             ],
           )),
         ],

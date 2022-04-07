@@ -1,26 +1,42 @@
-import 'package:flutter/services.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' show jsonEncode;
-import 'dart:convert';
-import 'dart:convert' show jsonDecode;
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
-class AddFish extends StatelessWidget {
+import 'package:fishapp/UserManagement/User.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
+class UpdateFish extends StatefulWidget {
+  String name;
+  String id;
+  String description;
+  double price;
+
+  UpdateFish({
+    required this.name,
+    required this.description,
+    required this.id,
+    required this.price,
+  });
+
+  //const UpdateUser({Key? key}) : super(key: key);
+
   @override
-  TextEditingController fishnameController = new TextEditingController();
+  _UpdateFishState createState() => _UpdateFishState();
+}
+
+class _UpdateFishState extends State<UpdateFish> {
+  TextEditingController nameController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
-  // late File _image;
+
   final formKey = GlobalKey<FormState>();
-  final picker = ImagePicker();
+  late String id1;
   String name = '';
   String description = '';
-  String Api_Url = 'http://127.0.0.1:8000/api/addfish';
   String price = '';
+  String Api_Url = 'http://localhost:8000/api/updatefish/';
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -33,30 +49,31 @@ class AddFish extends StatelessWidget {
         fontSize: 16.0);
   }
 
-  Add() async {
-    Object add = {
+  updateFish() async {
+    Object fish = {
       'name': name,
       'description': description,
       'price': price,
     };
-    String Final_Fish = jsonEncode(add);
+    String Final_User = jsonEncode(fish);
 
-    final Uri url = Uri.parse(Api_Url);
-    final http.Response response = await http.post(url,
+    final Uri url = Uri.parse(Api_Url + '${id1}');
+    final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
           'allowedHeaders': '*',
           'allowedMethods': '*',
         },
-        body: Final_Fish);
+        body: Final_User);
 
     // Dispatch action depending upon
     // the server response
     if (response.statusCode == 200) {
-      GlobalToast('Successful Added', Colors.green);
+      GlobalToast('Successful Updated', Colors.green);
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -67,38 +84,37 @@ class AddFish extends StatelessWidget {
       GlobalToast('404 not found', Colors.red);
     } else if (response.statusCode == 401) {
       GlobalToast('Unauthenticated', Colors.red);
-    } else if (response == []) {
-      GlobalToast('Duplicate data is entered ', Colors.red);
     }
   }
 
-  // const AddFish({ Key? key }) : super(key: key);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setState(() {
+      id1 = widget.id;
+      nameController.text = widget.name;
+      descriptionController.text = widget.description;
+      priceController.text = widget.price.toString();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Add Fish Details",
-        ),
+        title: Text("Update Fish"),
       ),
       body: Column(
         children: <Widget>[
+          SizedBox(height: 10),
           ClipPath(
             clipper: OvalBottomBorderClipper(),
             child: Container(
               height: 140,
               color: Colors.blue,
-              child: Center(
-                child: Text("Fish Details Form",
-                    style: TextStyle(
-                        fontSize: 40.0,
-                        fontFamily: 'Lobster',
-                        color: Colors.white)),
-              ),
             ),
-          ),
-          SizedBox(
-            height: 50,
           ),
           Form(
               key: formKey,
@@ -107,7 +123,7 @@ class AddFish extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
-                      controller: fishnameController,
+                      controller: nameController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Fish Name',
@@ -115,13 +131,9 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
-                      maxLines: 7,
                       controller: descriptionController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -130,9 +142,6 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
@@ -140,7 +149,7 @@ class AddFish extends StatelessWidget {
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),
+                        FilteringTextInputFormatter.allow(RegExp('[0-9.,]+'))
                       ],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -149,20 +158,14 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   FlatButton(
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 30.0),
-                    ),
+                    child: Text("Submit"),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     onPressed: () => {
-                      name = fishnameController.text.toString(),
+                      name = nameController.text.toString(),
                       description = descriptionController.text.toString(),
                       price = priceController.text.toString(),
                       if (name.isEmpty)
@@ -190,7 +193,7 @@ class AddFish extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('ERROR'),
-                                  content: Text('Name feild is required'),
+                                  content: Text('Descriptionfeild is required'),
                                   actions: <Widget>[
                                     FlatButton(
                                         onPressed: () {
@@ -220,8 +223,8 @@ class AddFish extends StatelessWidget {
                               })
                         }
                       else
-                        Add(),
-                      fishnameController.clear(),
+                        updateFish(),
+                      nameController.clear(),
                       descriptionController.clear(),
                       priceController.clear(),
                     },

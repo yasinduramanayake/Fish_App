@@ -1,7 +1,16 @@
 import 'dart:js';
 
+import 'package:fishapp/Adminmenu.dart';
+import 'package:fishapp/FishManagement/userListView.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' show jsonEncode;
+import 'dart:convert' show jsonDecode;
+import 'package:fishapp/Usermenu.dart';
 import 'package:fishapp/FishManagement/AddFish.dart';
-import 'package:fishapp/FishManagement/showFishes.dart';
+import 'package:fishapp/BuyingManagement/buyinglist.dart';
+import 'package:fishapp/Payment/paymentlist.dart';
+import 'package:fishapp/FishManagement/userListView.dart';
+import 'package:fishapp/FishManagement/FishList.dart';
 import 'package:fishapp/UserManagement/addUser.dart';
 import 'package:fishapp/UserManagement/usersList.dart';
 import 'package:fishapp/register.dart';
@@ -13,20 +22,28 @@ void main() {
     '/': (context) => Login(),
     '/register': (context) => Register(),
     '/addfish': (context) => AddFish(),
-    '/fish': (context) => ShowFishes(),
+    '/buyings': (context) => BuyingList(),
+    '/payments': (context) => PaymentList(),
+    '/fishes': (context) => FishList(),
+    '/adminmenu': (context) => Adminmenu(),
+    '/usermenu': (cotext) => Usermenu(),
+    '/userFishlist': (context) => UserFishList(),
     '/user': (context) => AddUser(),
     '/users': (context) => UsersList(),
   }));
+
+  // Profile();
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

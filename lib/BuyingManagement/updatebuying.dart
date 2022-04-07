@@ -1,26 +1,45 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert';
 import 'dart:convert' show jsonDecode;
+import 'package:fishapp/Payment/paymentGateReg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 
-class AddFish extends StatelessWidget {
+class UpdateBuy extends StatefulWidget {
+  String id = '';
+  double price = 0.00;
+  String name = '';
+  int quantity = 1;
+  UpdateBuy({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.quantity,
+  });
+
+  //const UpdateUser({Key? key}) : super(key: key);
+
+  @override
+  _UpdateBuyState createState() => _UpdateBuyState();
+}
+
+class _UpdateBuyState extends State<UpdateBuy> {
   @override
   TextEditingController fishnameController = new TextEditingController();
-  TextEditingController descriptionController = new TextEditingController();
+  TextEditingController quantityController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
   // late File _image;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
   String name = '';
-  String description = '';
-  String Api_Url = 'http://127.0.0.1:8000/api/addfish';
-  String price = '';
+  String id = '';
+  int quantity = 0;
+  String Api_Url = 'http://127.0.0.1:8000/api/updatebuying/';
+  double price = 0.00;
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -33,18 +52,20 @@ class AddFish extends StatelessWidget {
         fontSize: 16.0);
   }
 
-  Add() async {
-    Object add = {
-      'name': name,
-      'description': description,
+  Update() async {
+    Object update = {
+      'fish_name': name,
+      'quantity': quantity,
       'price': price,
+      'user_email': 'yasi@gmail.com'
     };
-    String Final_Fish = jsonEncode(add);
+    String Final_Fish = jsonEncode(update);
 
-    final Uri url = Uri.parse(Api_Url);
-    final http.Response response = await http.post(url,
+    final Uri url = Uri.parse(Api_Url + '${id}');
+    final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+            'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -72,33 +93,32 @@ class AddFish extends StatelessWidget {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      id = widget.id;
+      priceController.text = widget.price.toString();
+      quantityController.text = widget.quantity.toString();
+      fishnameController.text = widget.name.toString();
+    });
+  }
+
   // const AddFish({ Key? key }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add Fish Details",
+          "Add Buying Details",
         ),
       ),
       body: Column(
         children: <Widget>[
-          ClipPath(
-            clipper: OvalBottomBorderClipper(),
-            child: Container(
-              height: 140,
-              color: Colors.blue,
-              child: Center(
-                child: Text("Fish Details Form",
-                    style: TextStyle(
-                        fontSize: 40.0,
-                        fontFamily: 'Lobster',
-                        color: Colors.white)),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 50,
+          SizedBox(height: 10),
+          Text(
+            "Buy Now",
+            style: TextStyle(fontSize: 30.0),
           ),
           Form(
               key: formKey,
@@ -115,23 +135,18 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
-                      maxLines: 7,
-                      controller: descriptionController,
+                      controller: quantityController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Description',
+                        labelText: 'Quantity',
                         prefixIcon: Icon(Icons.description),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -149,22 +164,16 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   FlatButton(
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 30.0),
-                    ),
+                    child: Text("Submit"),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     onPressed: () => {
                       name = fishnameController.text.toString(),
-                      description = descriptionController.text.toString(),
-                      price = priceController.text.toString(),
+                      quantity = int.parse( quantityController.text.toString()),
+                      price = double.parse( priceController.text.toString()),
                       if (name.isEmpty)
                         {
                           showDialog(
@@ -183,14 +192,14 @@ class AddFish extends StatelessWidget {
                                 );
                               })
                         }
-                      else if (description.isEmpty)
+                      else if (quantity.toString().isEmpty)
                         {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('ERROR'),
-                                  content: Text('Name feild is required'),
+                                  content: Text('Quantity feild is required'),
                                   actions: <Widget>[
                                     FlatButton(
                                         onPressed: () {
@@ -201,7 +210,7 @@ class AddFish extends StatelessWidget {
                                 );
                               })
                         }
-                      else if (price.isEmpty)
+                      else if (price.toString().isEmpty)
                         {
                           showDialog(
                               context: context,
@@ -220,10 +229,12 @@ class AddFish extends StatelessWidget {
                               })
                         }
                       else
-                        Add(),
+                        Update(),
+                          Navigator.pushNamed(context, '/buyings'),
                       fishnameController.clear(),
-                      descriptionController.clear(),
+                      quantityController.clear(),
                       priceController.clear(),
+                    
                     },
                   ),
                 ],

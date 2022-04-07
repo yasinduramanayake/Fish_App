@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert' show jsonDecode;
@@ -9,7 +10,7 @@ class Login extends StatelessWidget {
   TextEditingController passwordController = new TextEditingController();
   String email = '';
   String password = '';
-  String Api_Url = 'http://localhost:8000/api/login';
+  String Api_Url = 'http://localhost:8000/api';
   String data = '';
 
   GlobalToast(massage, Color color1) {
@@ -23,6 +24,12 @@ class Login extends StatelessWidget {
         fontSize: 16.0);
   }
 
+  Profile() async {
+    final Uri url = Uri.parse(Api_Url);
+    final http.Response response = await http.post(url);
+    print(response.body);
+  }
+
   LogUser() async {
     Object log = {
       'email': email,
@@ -34,6 +41,7 @@ class Login extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -69,31 +77,62 @@ class Login extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // image insert
+          ClipPath(
+            clipper: WaveClipperTwo(),
+            child: Container(
+              height: 200,
+              color: Colors.blue,
+              child: Center(
+                child: Text("Login, Welocme Back",
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: 'Lobster',
+                        color: Colors.white)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 100,
+          ),
           Form(
               child: Column(
             children: <Widget>[
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+              Padding(
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+                child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email),
+                  ),
                 ),
               ),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.password),
+              Padding(
+                padding: EdgeInsets.fromLTRB(25, 40, 25, 50),
+                child: TextField(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.password),
+                  ),
                 ),
               ),
               FlatButton(
+                minWidth: 200,
                 child: Text(
                   'LogIn',
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(fontSize: 30.0),
                 ),
-                color: Colors.blueAccent,
+                padding: EdgeInsets.all(16),
+                color: Colors.blue,
                 textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  //side: BorderSide(color: Colors.blue),
+                ),
                 onPressed: () {
                   email = emailController.text.toString();
                   password = passwordController.text.toString();

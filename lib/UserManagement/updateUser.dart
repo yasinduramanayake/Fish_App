@@ -1,15 +1,24 @@
 import 'dart:convert';
 
+import 'package:fishapp/UserManagement/User.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateUser extends StatefulWidget {
   String name;
   String email;
-  String username;
+  String id;
+  String mobile;
+  String role;
 
-  UpdateUser({required this.name, required this.email, required this.username});
+  UpdateUser(
+      {required this.name,
+      required this.email,
+      required this.id,
+      required this.mobile,
+      required this.role});
 
   //const UpdateUser({Key? key}) : super(key: key);
 
@@ -18,18 +27,16 @@ class UpdateUser extends StatefulWidget {
 }
 
 class _UpdateUserState extends State<UpdateUser> {
-  TextEditingController firstNameController = new TextEditingController();
-  TextEditingController lastNameController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController usernameController = new TextEditingController();
-  TextEditingController confirmPasswordController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController mobileController = new TextEditingController();
 
-  String firstname = '';
-  String lastname = '';
-  String username = '';
-  String password = '';
-  String confirmPassword = '';
-  String Api_Url = 'http://localhost:8000/api/register';
+  late String id1;
+  String name = '';
+  String email = '';
+  String role = '';
+  String mobile = '';
+  String Api_Url = 'http://localhost:8000/api/updateuser/';
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -42,20 +49,20 @@ class _UpdateUserState extends State<UpdateUser> {
         fontSize: 16.0);
   }
 
-  addUser() async {
+  updateUser() async {
     Object user = {
-      'firstname': firstname,
-      'lastname': lastname,
-      'password': password,
-      'username': username,
-      'confirmPassword': 'confirmPassword',
+      'name': name,
+      'mobile': mobile,
+      'role': role,
+      'email': email,
     };
     String Final_User = jsonEncode(user);
 
-    final Uri url = Uri.parse(Api_Url);
-    final http.Response response = await http.post(url,
+    final Uri url = Uri.parse(Api_Url + '${id1}');
+    final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -67,7 +74,7 @@ class _UpdateUserState extends State<UpdateUser> {
     // Dispatch action depending upon
     // the server response
     if (response.statusCode == 200) {
-      GlobalToast('Successful Added', Colors.green);
+      GlobalToast('Successful Updated', Colors.green);
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -87,9 +94,11 @@ class _UpdateUserState extends State<UpdateUser> {
     super.initState();
 
     setState(() {
-      usernameController.text = widget.username;
-      lastNameController.text = widget.name;
-      firstNameController.text = widget.email;
+      id1 = widget.id;
+      nameController.text = widget.name;
+      emailController.text = widget.email;
+      mobileController.text = widget.mobile.toString();
+      role = widget.role;
     });
   }
 
@@ -101,6 +110,13 @@ class _UpdateUserState extends State<UpdateUser> {
       ),
       body: Column(
         children: <Widget>[
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 50,
+              color: Colors.blue,
+            ),
+          ),
           SizedBox(height: 10),
           Text(
             "Add User Form",
@@ -112,10 +128,10 @@ class _UpdateUserState extends State<UpdateUser> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  controller: firstNameController,
+                  controller: nameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'First Name',
+                    labelText: 'Name',
                     prefixIcon: Icon(Icons.edit),
                   ),
                 ),
@@ -123,10 +139,10 @@ class _UpdateUserState extends State<UpdateUser> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  controller: lastNameController,
+                  controller: emailController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Last Name',
+                    labelText: 'email',
                     prefixIcon: Icon(Icons.edit),
                   ),
                 ),
@@ -134,196 +150,149 @@ class _UpdateUserState extends State<UpdateUser> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
-                  controller: usernameController,
+                  controller: mobileController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Username',
+                    labelText: 'Mobile',
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.password),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: confirmPasswordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
-                    prefixIcon: Icon(Icons.confirmation_num),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextFormField(
-                  obscureText: true,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.price_change),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "please enter the title";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              // ignore: deprecated_member_use
-              SizedBox(
-                height: 20,
-              ),
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      const Text('Please let us know your Role:'),
+                      ListTile(
+                        leading: Radio<String>(
+                          value: 'Admin',
+                          groupValue: role,
+                          onChanged: (value) {
+                            setState(() {
+                              role = value!;
+                            });
+                          },
+                        ),
+                        title: const Text('Admin'),
+                      ),
+                      ListTile(
+                        leading: Radio<String>(
+                          value: 'User',
+                          groupValue: role,
+                          onChanged: (value) {
+                            setState(() {
+                              role = value!;
+                            });
+                          },
+                        ),
+                        title: const Text('User'),
+                      ),
+                    ],
+                  )),
               FlatButton(
-                child: Text("Submit"),
-                color: Colors.blueAccent,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0))),
-                onPressed: () {
-                  firstname = firstNameController.text.toString();
-                  lastname = lastNameController.text.toString();
-                  password = passwordController.text.toString();
-                  username = usernameController.text.toString();
-                  confirmPassword = confirmPasswordController.text.toString();
+                  child: Text("Submit"),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  onPressed: () {
+                    name = nameController.text.toString();
+                    email = emailController.text.toString();
 
-                  if (firstname.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('First Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (lastname.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Last Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (username.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Username feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (password.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Last Name feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (confirmPassword.isEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text('Confirm Password feild is required',
-                                style: TextStyle(color: Colors.red)),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  } else if (confirmPassword != password) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'ERROR',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            content: Text(
-                              'Password not match',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'))
-                            ],
-                          );
-                        });
-                  }
-                },
-              )
+                    mobile = mobileController.text.toString();
+
+                    if (name.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text('Name feild is required',
+                                  style: TextStyle(color: Colors.red)),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (email.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text('Email feild is required',
+                                  style: TextStyle(color: Colors.red)),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (!email.contains('@')) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter a valid email address',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'))
+                              ],
+                            );
+                          });
+                    } else if (mobile.length > 10 || mobile.length < 10) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'ERROR',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                'Enter valid numbers length',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'OK',
+                                    ))
+                              ],
+                            );
+                          });
+                    } else {
+                      this.updateUser();
+
+                      Navigator.pushNamed(context, '/users');
+                    }
+                  })
             ],
           )),
         ],

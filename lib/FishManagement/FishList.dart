@@ -1,34 +1,34 @@
 import 'dart:convert';
+import 'package:fishapp/FishManagement/updatefish.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:fishapp/UserManagement/User.dart';
-import 'package:fishapp/UserManagement/updateUser.dart';
+import 'package:fishapp/FishManagement/Fish.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:http/http.dart' as http;
 
-class UsersList extends StatefulWidget {
-  const UsersList({Key? key}) : super(key: key);
+class FishList extends StatefulWidget {
+  const FishList({Key? key}) : super(key: key);
 
   @override
-  State<UsersList> createState() => _UsersListState();
+  State<FishList> createState() => _FishListState();
 }
 
-class _UsersListState extends State<UsersList> {
-  List<User> users = [];
+class _FishListState extends State<FishList> {
+  List<Fish> fishes = [];
   String Api_Url = 'http://localhost:8000/api/';
-  Future<List<User>?> getUsersData() async {
-    final Uri url = Uri.parse(Api_Url + 'users');
+  Future<List<Fish>?> getUsersData() async {
+    final Uri url = Uri.parse(Api_Url + 'fishes');
     final http.Response response = await http.get(url);
     var jsonData = jsonDecode(response.body);
     var data = jsonData['data']['data'];
     //add users to the list
     for (var u in data) {
-      User user = User(
-          u['id'].toString(), u['name'], u['mobile'], u['email'], u['role']);
-      users.add(user);
+      Fish fish =
+          Fish(u['id'].toString(), u['name'], u['description'], u['price']);
+      fishes.add(fish);
     }
 
-    return users;
+    return fishes;
   }
 
   GlobalToast(massage, Color color1) {
@@ -43,7 +43,7 @@ class _UsersListState extends State<UsersList> {
   }
 
   delete(id) async {
-    final Uri url = Uri.parse(Api_Url + 'deleteuser/${id}');
+    final Uri url = Uri.parse(Api_Url + 'deletefish/${id}');
     final http.Response response = await http.delete(url);
 
     if (response.statusCode == 200) {
@@ -65,14 +65,14 @@ class _UsersListState extends State<UsersList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Users List'),
+          title: Text('Fish List'),
         ),
         body: Container(
           //snapshot - data coming from the api
-          child: FutureBuilder<List<User>?>(
+          child: FutureBuilder<List<Fish>?>(
               future: getUsersData(),
               builder: (context, snapshot) {
-                List<User>? list = snapshot.data;
+                List<Fish>? list = snapshot.data;
                 if (list == null) {
                   return Container(
                     child: Center(
@@ -94,7 +94,6 @@ class _UsersListState extends State<UsersList> {
                                 borderRadius: BorderRadius.circular(10)),
                             title: Text(list[i].name),
                             subtitle: Text(list[i].name),
-                            trailing: Text(list[i].email),
                           ),
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),
@@ -110,12 +109,11 @@ class _UsersListState extends State<UsersList> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => UpdateUser(
+                                          builder: (context) => UpdateFish(
                                                 name: list[i].name,
-                                                email: list[i].email,
+                                                price: list[i].price,
                                                 id: list[i].id,
-                                                mobile: list[i].mobile,
-                                                role: list[i].role,
+                                                description: list[i].description,
                                               )));
                                 },
                                 backgroundColor: Colors.blue,
@@ -128,7 +126,7 @@ class _UsersListState extends State<UsersList> {
                                 onPressed: (context) {
                                   this.delete(list[i].id);
 
-                                  Navigator.pushNamed(context, '/users');
+                                  Navigator.pushNamed(context, '/fishes');
                                 },
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
