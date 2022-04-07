@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fishapp/UserManagement/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -107,11 +108,14 @@ class _UpdateFishState extends State<UpdateFish> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            "Add Fish Form",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 60,
+              color: Colors.blue,
+            ),
           ),
+          SizedBox(height: 20),
           Form(
               key: formKey,
               child: Column(
@@ -219,9 +223,7 @@ class _UpdateFishState extends State<UpdateFish> {
                               })
                         }
                       else
-                        updateFish(),
-               
-                      Navigator.pushNamed(context, '/fishes')
+                        {updateFish(), Navigator.pushNamed(context, '/fishes')}
                     },
                   ),
                 ],

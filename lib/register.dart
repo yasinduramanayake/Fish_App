@@ -1,3 +1,6 @@
+import 'dart:ui';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:fishapp/WavedAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -19,7 +22,7 @@ class Register extends StatelessWidget {
   String mobile = '';
   String password_confirmation = '';
   String Api_Url = 'http://localhost:8000/api/register';
- 
+
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
         msg: massage,
@@ -28,17 +31,16 @@ class Register extends StatelessWidget {
         timeInSecForIosWeb: 1,
         backgroundColor: color1,
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: 8.0);
   }
 
   createUser() async {
-   
     Object user = {
       'email': email,
       'password': password,
       'mobile': mobile,
       'name': name,
-      'role': 'user',
+      'role': 'User',
       'password_confirmation': password_confirmation
     };
     String Final_User = jsonEncode(user);
@@ -47,7 +49,7 @@ class Register extends StatelessWidget {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -81,13 +83,24 @@ class Register extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: Text(
+          "Sign Up",
+          style: TextStyle(
+              fontSize: 20.0, fontFamily: 'Lobster', color: Colors.white),
+        ),
       ),
       body: Center(
           child: Column(children: <Widget>[
+        ClipPath(
+          clipper: WaveClipperTwo(),
+          child: Container(
+            height: 80,
+            color: Colors.blue,
+          ),
+        ),
         // user name
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: TextField(
             controller: nameController,
             decoration: InputDecoration(
@@ -98,7 +111,7 @@ class Register extends StatelessWidget {
         ),
         // email
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           // mobile
           child: TextField(
             controller: emailController,
@@ -111,7 +124,7 @@ class Register extends StatelessWidget {
         // password
 
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: TextField(
             obscureText: true,
             controller: passwordController,
@@ -123,7 +136,7 @@ class Register extends StatelessWidget {
         ),
         // password Confirmation
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: TextField(
             obscureText: true,
             controller: passowrdconfirmController,
@@ -135,7 +148,7 @@ class Register extends StatelessWidget {
         ),
 
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           // mobile
           child: TextField(
             controller: mobileController,
@@ -149,7 +162,7 @@ class Register extends StatelessWidget {
 
         // Button
         Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: FlatButton(
               child: Text(
                 'Sign Up',

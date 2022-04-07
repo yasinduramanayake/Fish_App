@@ -87,7 +87,9 @@ class _FishListState extends State<UserFishList> {
                       itemBuilder: (context, i) {
                         return Slidable(
                           key: ValueKey(i),
-                          child: ListTile(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: ListTile(
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 8),
                             tileColor: Colors.greenAccent,
@@ -110,7 +112,7 @@ class _FishListState extends State<UserFishList> {
                             },
                           ),
                           
-                         
+                          ),
                         );
                       });
                 }

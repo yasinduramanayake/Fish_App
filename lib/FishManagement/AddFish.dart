@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert';
@@ -82,10 +83,22 @@ class AddFish extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            "Add Fish Details Form",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 120,
+              color: Colors.blue,
+              child: Center(
+                child: Text("Fish Details Form",
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: 'Lobster',
+                        color: Colors.white)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
           ),
           Form(
               key: formKey,
@@ -102,9 +115,13 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
+                      maxLines: 7,
                       controller: descriptionController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -112,6 +129,9 @@ class AddFish extends StatelessWidget {
                         prefixIcon: Icon(Icons.description),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -129,8 +149,14 @@ class AddFish extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   FlatButton(
-                    child: Text("Submit"),
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(fontSize: 30.0),
+                    ),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     shape: RoundedRectangleBorder(
@@ -194,11 +220,13 @@ class AddFish extends StatelessWidget {
                               })
                         }
                       else
-                        Add(),
-                      fishnameController.clear(),
-                      descriptionController.clear(),
-                      priceController.clear(),
-                           Navigator.pushNamed(context, '/fishes')
+                        {
+                          Add(),
+                          fishnameController.clear(),
+                          descriptionController.clear(),
+                          priceController.clear(),
+                          Navigator.pushNamed(context, '/fishes')
+                        }
                     },
                   ),
                 ],

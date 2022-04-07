@@ -33,7 +33,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
   TextEditingController fishnameController = new TextEditingController();
   TextEditingController quantityController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
-      final LocalStorage storage = new LocalStorage('localstorage_app');
+  final LocalStorage storage = new LocalStorage('localstorage_app');
   // late File _image;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
@@ -59,7 +59,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
       'fish_name': name,
       'quantity': quantity,
       'price': price,
-      'user_email':   storage.getItem('email')
+      'user_email': storage.getItem('email')
     };
     String Final_Fish = jsonEncode(update);
 
@@ -67,7 +67,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
     final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -174,8 +174,8 @@ class _UpdateBuyState extends State<UpdateBuy> {
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     onPressed: () => {
                       name = fishnameController.text.toString(),
-                      quantity = int.parse( quantityController.text.toString()),
-                      price = double.parse( priceController.text.toString()),
+                      quantity = int.parse(quantityController.text.toString()),
+                      price = double.parse(priceController.text.toString()),
                       if (name.isEmpty)
                         {
                           showDialog(
@@ -231,12 +231,13 @@ class _UpdateBuyState extends State<UpdateBuy> {
                               })
                         }
                       else
-                        Update(),
+                        {
+                          Update(),
                           Navigator.pushNamed(context, '/buyings'),
-                      fishnameController.clear(),
-                      quantityController.clear(),
-                      priceController.clear(),
-                    
+                          fishnameController.clear(),
+                          quantityController.clear(),
+                          priceController.clear(),
+                        }
                     },
                   ),
                 ],

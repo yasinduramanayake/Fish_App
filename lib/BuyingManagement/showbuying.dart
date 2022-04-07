@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:fishapp/BuyingManagement/updatebuying.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 
 class ShowBuying extends StatefulWidget {
@@ -11,7 +12,6 @@ class ShowBuying extends StatefulWidget {
   String id;
   int quantity;
   double price;
-
 
   ShowBuying({
     required this.name,
@@ -76,7 +76,6 @@ class _ShowBuyingState extends State<ShowBuying> {
       email = widget.email;
       Price = widget.price;
       quantity = widget.quantity;
-    
     });
   }
 
@@ -87,68 +86,50 @@ class _ShowBuyingState extends State<ShowBuying> {
             "Selected Buying",
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Fish Name : ${Name}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+        body: Column(children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Name = ${Name}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Your Email : ${email}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+            color: Colors.green,
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Description = ${Price}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Fish Price : ${Price.toString()}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+            color: Colors.green,
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Price = ${quantity}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
+            color: Colors.green,
+          ),
             Expanded(
               flex: 5,
               child: Padding(
                   padding: EdgeInsets.all(1.0),
                   child: Center(
                       child: FlatButton(
-                    child: Text("Update", style: TextStyle(
+                    child: Text(
+                      "Update",
+                      style: TextStyle(
                         fontSize: 20.0,
-                      ),),
-                      shape: RoundedRectangleBorder(
+                      ),
+                    ),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12), // <-- Radius
                     ),
                     color: Colors.blueAccent,

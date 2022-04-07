@@ -68,7 +68,7 @@ class _BuyingListState extends State<BuyingList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Buying List'),
+          title: Text('Buyings List'),
         ),
         body: Container(
           //snapshot - data coming from the api

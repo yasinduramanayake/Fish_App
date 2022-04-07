@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -53,7 +54,7 @@ class _AddUserState extends State<AddUser> {
     final http.Response response = await http.post(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -89,27 +90,33 @@ class _AddUserState extends State<AddUser> {
       ),
       body: Column(
         children: <Widget>[
-         
-          Text(
-            "Add User Form",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 50,
+              color: Colors.blue,
+            ),
           ),
+          SizedBox(height: 10),
           Form(
               child: Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: nameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Name',
-                    prefixIcon: Icon(Icons.edit),
+                    prefixIcon: Icon(Icons.person),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -121,7 +128,7 @@ class _AddUserState extends State<AddUser> {
               ),
 
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(16.0),
                 // mobile
                 child: TextField(
                   controller: mobileController,
@@ -136,10 +143,35 @@ class _AddUserState extends State<AddUser> {
               ),
 
               Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  obscureText: true,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.password),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  obscureText: true,
+                  controller: passowrdconfirmController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Confirm Password',
+                    prefixIcon: Icon(Icons.confirmation_num),
+                  ),
+                ),
+              ),
+              Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
                     children: [
-                      const Text('Please let us know your Role:'),
+                      const Text('Select the Role:'),
                       ListTile(
                         leading: Radio<String>(
                           value: 'Admin',
@@ -166,35 +198,12 @@ class _AddUserState extends State<AddUser> {
                       ),
                     ],
                   )),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    prefixIcon: Icon(Icons.password),
-                  ),
-                ),
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: passowrdconfirmController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
-                    prefixIcon: Icon(Icons.confirmation_num),
-                  ),
-                ),
-              ),
 
               // ignore: deprecated_member_use
 
               FlatButton(
                   child: Text("Submit"),
-                  color: Colors.blueAccent,
+                  color: Colors.blue,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),

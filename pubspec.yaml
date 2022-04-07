@@ -41,6 +41,7 @@ dependencies:
   localstorage: ^4.0.0+1
   
   flutter_slidable: ^1.2.0
+  flutter_custom_clippers: ^2.0.0
 
 
 dev_dependencies:
@@ -84,10 +85,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Lobster
+      fonts:
+        - asset: assets/fonts/Lobster-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

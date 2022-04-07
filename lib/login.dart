@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show jsonEncode;
 import 'dart:convert';
@@ -80,18 +83,37 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
+      
       appBar: AppBar(
+        
         title: Text("Sign In"),
       ),
       body: Column(
         children: [
-          // image insert
+          ClipPath(
+            clipper: WaveClipperTwo(),
+            child: Container(
+              height: 128,
+              color: Colors.blue,
+              child: Center(
+                child: Text("Login, Welocme Back",
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        fontFamily: 'Lobster',
+                        color: Colors.white)),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 100,
+          ),
           Form(
               child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -102,7 +124,7 @@ class Login extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.fromLTRB(25, 40, 25, 50),
                 child: TextField(
                   obscureText: true,
                   controller: passwordController,
@@ -114,12 +136,18 @@ class Login extends StatelessWidget {
                 ),
               ),
               FlatButton(
+                minWidth: 140,
                 child: Text(
                   'LogIn',
                   style: TextStyle(fontSize: 20.0),
                 ),
-                color: Colors.blueAccent,
+                padding: EdgeInsets.all(16),
+                color: Colors.blue,
                 textColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  //side: BorderSide(color: Colors.blue),
+                ),
                 onPressed: () {
                   email = emailController.text.toString();
                   password = passwordController.text.toString();
@@ -193,7 +221,7 @@ class Login extends StatelessWidget {
                     LogUser();
                     email = '';
                     password = '';
-                    if (storage.getItem('role') == "user") {
+                    if (storage.getItem('role') == "User") {
                       Navigator.pushNamed(context, '/usermenu');
                     } else {
                       Navigator.pushNamed(context, '/adminmenu');
@@ -201,6 +229,19 @@ class Login extends StatelessWidget {
                   }
                 },
               ),
+             Padding(      padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0)),
+              Text('Dont you have an account?' ,style: TextStyle(color: Colors.red),),
+              
+              FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/register');
+                },
+                
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(fontSize: 15.0),
+                ),
+              )
             ],
           )),
         ],

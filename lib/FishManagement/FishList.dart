@@ -69,7 +69,7 @@ class _FishListState extends State<FishList> {
         ),
         bottomNavigationBar: FlatButton(
           onPressed: () {
-             Navigator.pushNamed(context, '/addfish');
+            Navigator.pushNamed(context, '/addfish');
           },
           child: Text(
             "Add Fish",
@@ -104,27 +104,24 @@ class _FishListState extends State<FishList> {
                       itemBuilder: (context, i) {
                         return Slidable(
                           key: ValueKey(i),
-                          child: ListTile(
-                          
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            tileColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            title: Text(list[i].name),
-                            
-                            
-                            subtitle: Text(list[i].name),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
+                              tileColor: Colors.greenAccent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              title: Text(list[i].name),
+                              subtitle: Text(list[i].name),
+                            ),
                           ),
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),
                             // extentRatio: 0.5,
                             children: [
-                              
                               SlidableAction(
-                                
                                 onPressed: (context) {
-                              
                                   // ScaffoldMessenger.of(context).showSnackBar(
                                   //     SnackBar(
                                   //         content:

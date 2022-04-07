@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fishapp/UserManagement/User.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,7 +36,7 @@ class _UpdateUserState extends State<UpdateUser> {
   String email = '';
   String role = '';
   String mobile = '';
-  String Api_Url = 'http://localhost:8000/api/updateuser/' ;
+  String Api_Url = 'http://localhost:8000/api/updateuser/';
 
   GlobalToast(massage, Color color1) {
     return Fluttertoast.showToast(
@@ -61,7 +62,7 @@ class _UpdateUserState extends State<UpdateUser> {
     final http.Response response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-            'accept': 'application/json',
+          'accept': 'application/json',
           'supportsCredentials': 'true',
           'allowedOrigins': '*',
           'allowedOriginsPatterns': '',
@@ -109,11 +110,15 @@ class _UpdateUserState extends State<UpdateUser> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            "Add User Form",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 50,
+              color: Colors.blue,
+            ),
           ),
+          SizedBox(height: 10),
+          
           Form(
               child: Column(
             children: [
@@ -183,7 +188,7 @@ class _UpdateUserState extends State<UpdateUser> {
                   )),
               FlatButton(
                   child: Text("Submit"),
-                  color: Colors.blueAccent,
+                  color: Colors.blue,
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),

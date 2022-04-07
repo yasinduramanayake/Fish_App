@@ -23,7 +23,7 @@ void main() {
     '/register': (context) => Register(),
     '/addfish': (context) => AddFish(),
     '/buyings': (context) => BuyingList(),
-     '/payments': (context) => PaymentList(),
+    '/payments': (context) => PaymentList(),
     '/fishes': (context) => FishList(),
     '/adminmenu' :(context) => Adminmenu(),
     '/usermenu' :(cotext) => Usermenu(),
@@ -35,8 +35,6 @@ void main() {
   // Profile();
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -45,7 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

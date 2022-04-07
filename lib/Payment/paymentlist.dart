@@ -32,8 +32,8 @@ class _PaymentListState extends State<PaymentList> {
           u['name_on_card'],
           u['bank'],
           u['cvc'],
-         u['amount'],
-         u['card_number'],
+          u['amount'],
+          u['card_number'],
           u['address']);
       payments.add(payment);
     }
@@ -75,7 +75,7 @@ class _PaymentListState extends State<PaymentList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Users List'),
+          title: Text('Payments List'),
         ),
         body: Container(
           //snapshot - data coming from the api
@@ -120,7 +120,6 @@ class _PaymentListState extends State<PaymentList> {
                                             dob: list[i].dob,
                                             cardNumber: list[i].cardnumber,
                                             cvc: list[i].cvc,
-                                           
                                           )));
                             },
                           ),

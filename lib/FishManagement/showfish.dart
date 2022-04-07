@@ -49,88 +49,64 @@ class _ShowFishState extends State<ShowFish> {
             "Selected Fish",
           ),
         ),
-        body: Card(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Fish Name : ${Name}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+        body: Column(children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Name = ${Name}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Fish Description : ${Description}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+            color: Colors.green,
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Description = ${Description}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Fish Price : ${Price.toString()}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+            color: Colors.green,
+          ),
+          Card(
+            child: ListTile(
+              title: Text(
+                'Fish Price = ${Price}',
+                style: TextStyle(color: Colors.white),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Center(
-                      child: FlatButton(
-                    child: Text(
-                      "Buy Now",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
+            color: Colors.green,
+          ),
+          Expanded(
+            flex: 5,
+            child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Center(
+                    child: FlatButton(
+                  child: Text(
+                    "Buy Now",
+                    style: TextStyle(
+                      fontSize: 20.0,
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // <-- Radius
-                    ),
-                    color: Colors.blueAccent,
-                    height: 40,
-                    textColor: Colors.white,
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AddBuy(price: Price, name: Name)))
-                    },
-                  ))),
-            ),
-          ],
-        )
-    ));
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                  ),
+                  color: Colors.blueAccent,
+                  height: 40,
+                  textColor: Colors.white,
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                AddBuy(price: Price, name: Name)))
+                  },
+                ))),
+          ),
+        ]));
   }
 }

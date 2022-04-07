@@ -44,9 +44,9 @@ class _UsersListState extends State<UsersList> {
 
   delete(id) async {
     final Uri url = Uri.parse(Api_Url + 'deleteuser/${id}');
-     final http.Response response = await http.delete(url);
+    final http.Response response = await http.delete(url);
 
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       GlobalToast('Successful Deleted', Colors.green);
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
@@ -69,7 +69,7 @@ class _UsersListState extends State<UsersList> {
         ),
         bottomNavigationBar: FlatButton(
           onPressed: () {
-             Navigator.pushNamed(context, '/user');
+            Navigator.pushNamed(context, '/user');
           },
           child: Text(
             "Add User",
@@ -103,15 +103,18 @@ class _UsersListState extends State<UsersList> {
                       itemBuilder: (context, i) {
                         return Slidable(
                           key: ValueKey(i),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            tileColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            title: Text(list[i].name),
-                            subtitle: Text(list[i].name),
-                            trailing: Text(list[i].email),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
+                              tileColor: Colors.greenAccent,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              title: Text(list[i].name),
+                              subtitle: Text(list[i].name),
+                              trailing: Text(list[i].email),
+                            ),
                           ),
                           endActionPane: ActionPane(
                             motion: ScrollMotion(),

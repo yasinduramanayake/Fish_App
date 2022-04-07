@@ -30,7 +30,7 @@ class _AddBuyState extends State<AddBuy> {
   TextEditingController fishnameController = new TextEditingController();
   TextEditingController quantityController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
-    final LocalStorage storage = new LocalStorage('localstorage_app');
+  final LocalStorage storage = new LocalStorage('localstorage_app');
   // late File _image;
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
@@ -55,7 +55,7 @@ class _AddBuyState extends State<AddBuy> {
       'fish_name': name,
       'quantity': quantity,
       'price': price,
-      'user_email':   storage.getItem('email')
+      'user_email': storage.getItem('email')
     };
     String Final_Fish = jsonEncode(add);
 
@@ -227,14 +227,16 @@ class _AddBuyState extends State<AddBuy> {
                               })
                         }
                       else
-                        Add(),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddPayment(
-                                    price: double.parse(price),
-                                  ))),
-                      quantityController.clear(),
+                        {
+                          Add(),
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddPayment(
+                                        price: double.parse(price),
+                                      ))),
+                          quantityController.clear(),
+                        }
                     },
                   ),
                 ],
