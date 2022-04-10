@@ -4,6 +4,7 @@ import 'dart:convert' show jsonEncode;
 import 'dart:convert';
 import 'dart:convert' show jsonDecode;
 import 'package:fishapp/Payment/paymentGateReg.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter/material.dart';
@@ -76,6 +77,12 @@ class _AddBuyState extends State<AddBuy> {
     // the server response
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AddPayment(
+                    price: double.parse(price),
+                  )));
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -111,6 +118,20 @@ class _AddBuyState extends State<AddBuy> {
       ),
       body: Column(
         children: <Widget>[
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 120,
+              color: Colors.blue,
+              child: Center(
+                child: Text("Add buying Form",
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: 'Lobster',
+                        color: Colors.white)),
+              ),
+            ),
+          ),
           SizedBox(height: 10),
           Text(
             "Buy Now",
@@ -229,12 +250,6 @@ class _AddBuyState extends State<AddBuy> {
                       else
                         {
                           Add(),
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddPayment(
-                                        price: double.parse(price),
-                                      ))),
                           quantityController.clear(),
                         }
                     },

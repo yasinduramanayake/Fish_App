@@ -75,6 +75,7 @@ class _UpdateUserState extends State<UpdateUser> {
     // the server response
     if (response.statusCode == 200) {
       GlobalToast('Successful Updated', Colors.green);
+      Navigator.pushNamed(context, '/users');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -118,7 +119,6 @@ class _UpdateUserState extends State<UpdateUser> {
             ),
           ),
           SizedBox(height: 10),
-          
           Form(
               child: Column(
             children: [
@@ -286,8 +286,6 @@ class _UpdateUserState extends State<UpdateUser> {
                           });
                     } else {
                       this.updateUser();
-
-                      Navigator.pushNamed(context, '/users');
                     }
                   })
             ],

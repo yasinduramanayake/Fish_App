@@ -73,10 +73,6 @@ class Register extends StatelessWidget {
     } else if (response.statusCode == 401) {
       GlobalToast('Unauthenticated', Colors.red);
     }
-    email = password = ' ';
-    name = ' ';
-    password_confirmation = ' ';
-    mobile = ' ';
   }
 
   @override
@@ -362,8 +358,12 @@ class Register extends StatelessWidget {
                       });
                 } else {
                   this.createUser();
-
-                  Navigator.pushNamed(context, '/login');
+                  emailController.clear();
+                  passwordController.clear();
+                  passowrdconfirmController.clear();
+                  nameController.clear();
+                  mobileController.clear();
+                  Navigator.pushNamed(context, '/');
                 }
               }),
         )

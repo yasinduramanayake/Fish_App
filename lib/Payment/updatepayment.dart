@@ -89,7 +89,7 @@ class _UpdatePaymentState extends State<UpdatePayment> {
       'bank': bank,
     };
 
-    String PayRegUser = jsonEncode(payUser);
+    String PayUpdUser = jsonEncode(payUser);
 
     final Uri url = Uri.parse(Api_Url + '${id}');
     final http.Response response = await http.put(url,
@@ -102,13 +102,14 @@ class _UpdatePaymentState extends State<UpdatePayment> {
           'allowedHeaders': '*',
           'allowedMethods': '*',
         },
-        body: PayRegUser);
+        body: PayUpdUser);
 
     // Dispatch action depending upon
     // the server response
 
     if (response.statusCode == 200) {
-      GlobalToast('Successfully Added', Colors.green);
+      GlobalToast('Successfully Updated', Colors.green);
+      Navigator.pushNamed(context, '/payments');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -220,7 +221,7 @@ class _UpdatePaymentState extends State<UpdatePayment> {
         Padding(padding: const EdgeInsets.all(8.0)),
         FlatButton(
             child: Text(
-              'Pay',
+              'Update',
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -429,7 +430,6 @@ class _UpdatePaymentState extends State<UpdatePayment> {
                     });
               } else {
                 this.updatePayment();
-                Navigator.pushNamed(context, '/payments');
               }
             }),
       ])),

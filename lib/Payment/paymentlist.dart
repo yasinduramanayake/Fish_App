@@ -16,10 +16,11 @@ class PaymentList extends StatefulWidget {
 
 class _PaymentListState extends State<PaymentList> {
   List<Payment> payments = [];
-   final LocalStorage storage = new LocalStorage('localstorage_app');
+  final LocalStorage storage = new LocalStorage('localstorage_app');
   String Api_Url = 'http://localhost:8000/api/';
-  Future<List<Payment>?> getUsersData() async {
-    final Uri url = Uri.parse(Api_Url + 'payments?filter[email] =${storage.getItem('email')}');
+  Future<List<Payment>?> getpaymentsData() async {
+    final Uri url = Uri.parse(
+        Api_Url + 'payments?filter[email] =${storage.getItem('email')}');
     final http.Response response = await http.get(url);
     var jsonData = jsonDecode(response.body);
     var data = jsonData['data']['data'];
@@ -80,7 +81,7 @@ class _PaymentListState extends State<PaymentList> {
         body: Container(
           //snapshot - data coming from the api
           child: FutureBuilder<List<Payment>?>(
-              future: getUsersData(),
+              future: getpaymentsData(),
               builder: (context, snapshot) {
                 List<Payment>? list = snapshot.data;
                 if (list == null) {
@@ -95,35 +96,36 @@ class _PaymentListState extends State<PaymentList> {
                       itemCount: list.length,
                       itemBuilder: (context, i) {
                         return Slidable(
-                          key: ValueKey(i),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            tileColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            title: Text(list[i].bank),
-                            subtitle: Text(list[i].address),
-                            trailing: Text(list[i].price.toString()),
-                            onTap: () {
-                               
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ShowPayment(
-                                            id: list[i].id,
-                                            nic: list[i].nic,
-                                            amount: list[i].price,
-                                            bank: list[i].bank,
-                                            cardName: list[i].cardname,
-                                            address: list[i].address,
-                                            dob: list[i].dob,
-                                            cardNumber: list[i].cardnumber,
-                                            cvc: list[i].cvc,
-                                          )));
-                            },
-                          ),
-                        );
+                            key: ValueKey(i),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                tileColor: Colors.greenAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                title: Text(list[i].bank),
+                                subtitle: Text(list[i].cardname),
+                                trailing: Text(list[i].price.toString()),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShowPayment(
+                                                id: list[i].id,
+                                                nic: list[i].nic,
+                                                amount: list[i].price,
+                                                bank: list[i].bank,
+                                                cardName: list[i].cardname,
+                                                address: list[i].address,
+                                                dob: list[i].dob,
+                                                cardNumber: list[i].cardnumber,
+                                                cvc: list[i].cvc,
+                                              )));
+                                },
+                              ),
+                            ));
                       });
 
                   // ScaffoldMessenger.of(context).showSnackBar(

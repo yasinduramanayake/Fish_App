@@ -86,77 +86,84 @@ class _ShowBuyingState extends State<ShowBuying> {
             "Selected Buying",
           ),
         ),
-        body: Column(children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-          ),
-          Card(
-            child: ListTile(
-              title: Text(
-                'Fish Name = ${Name}',
-                style: TextStyle(color: Colors.white),
+        body: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+            ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Fish Name = ${Name}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
+              color: Colors.green,
             ),
-            color: Colors.green,
-          ),
-          Card(
-            child: ListTile(
-              title: Text(
-                'Fish Description = ${Price}',
-                style: TextStyle(color: Colors.white),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Fish Description = ${Price}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
+              color: Colors.green,
             ),
-            color: Colors.green,
-          ),
-          Card(
-            child: ListTile(
-              title: Text(
-                'Fish Price = ${quantity}',
-                style: TextStyle(color: Colors.white),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Fish Price = ${quantity}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
+              color: Colors.green,
             ),
-            color: Colors.green,
-          ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: EdgeInsets.all(1.0),
-                  child: Center(
-                      child: FlatButton(
-                    child: Text(
-                      "Update",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // <-- Radius
-                    ),
-                    color: Colors.blueAccent,
-                    height: 40,
-                    textColor: Colors.white,
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UpdateBuy(
-                                    id: id,
-                                    name: Name,
-                                    price: Price,
-                                    quantity: quantity,
-                                  )))
-                    },
-                  ))),
+             Padding(
+              padding: EdgeInsets.all(8.0),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: EdgeInsets.all(1.0),
-                  child: Center(
-                      child: FlatButton(
-                    child: Text("Delete"),
-                    onPressed: () => {this.delete()},
-                  ))),
+            FlatButton(
+              child: Text(
+                "Update",
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+              ),
+              color: Colors.blueAccent,
+              height: 40,
+              textColor: Colors.white,
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateBuy(
+                              id: id,
+                              name: Name,
+                              price: Price,
+                              quantity: quantity,
+                            )))
+              },
+            ),
+             Padding(
+              padding: EdgeInsets.all(8.0),
+            ),
+            FlatButton(
+              child: Text(
+                "Delete",
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+              ),
+              color: Colors.blueAccent,
+              height: 40,
+              textColor: Colors.white,
+              onPressed: () =>
+                  {this.delete(), Navigator.pushNamed(context, '/buyings')},
             ),
           ],
         ));

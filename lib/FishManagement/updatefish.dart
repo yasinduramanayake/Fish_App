@@ -55,7 +55,7 @@ class _UpdateFishState extends State<UpdateFish> {
       'description': description,
       'price': price,
     };
-    String Final_User = jsonEncode(fish);
+    String Final_Fish = jsonEncode(fish);
 
     final Uri url = Uri.parse(Api_Url + '${id1}');
     final http.Response response = await http.put(url,
@@ -68,12 +68,13 @@ class _UpdateFishState extends State<UpdateFish> {
           'allowedHeaders': '*',
           'allowedMethods': '*',
         },
-        body: Final_User);
+        body: Final_Fish);
 
     // Dispatch action depending upon
     // the server response
     if (response.statusCode == 200) {
       GlobalToast('Successful Updated', Colors.green);
+      Navigator.pushNamed(context, '/fishes');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -223,7 +224,10 @@ class _UpdateFishState extends State<UpdateFish> {
                               })
                         }
                       else
-                        {updateFish(), Navigator.pushNamed(context, '/fishes')}
+                        {
+                          updateFish(),
+                   
+                        }
                     },
                   ),
                 ],

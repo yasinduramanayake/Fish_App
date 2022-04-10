@@ -67,6 +67,7 @@ class _AddUserState extends State<AddUser> {
     // the server response
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);
+      Navigator.pushNamed(context, '/users');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -393,8 +394,11 @@ class _AddUserState extends State<AddUser> {
                           });
                     } else {
                       this.addUser();
-
-                      Navigator.pushNamed(context, '/users');
+                      nameController.clear();
+                      emailController.clear();
+                      mobileController.clear();
+                      passowrdconfirmController.clear();
+                      passwordController.clear();
                     }
                   })
             ],

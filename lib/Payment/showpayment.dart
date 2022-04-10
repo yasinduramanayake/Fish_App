@@ -16,7 +16,6 @@ class ShowPayment extends StatefulWidget {
   int cardNumber = 0;
   int cvc = 0;
 
-
   ShowPayment({
     required this.id,
     required this.nic,
@@ -27,7 +26,6 @@ class ShowPayment extends StatefulWidget {
     required this.dob,
     required this.cardNumber,
     required this.cvc,
- 
   });
 
   //const UpdateUser({Key? key}) : super(key: key);
@@ -46,7 +44,7 @@ class _ShowPaymentState extends State<ShowPayment> {
   String cardName = '';
   int cardNumber = 0;
   int cvc = 0;
-  
+
   String Api_Url = 'http://localhost:8000/api/deletepayment/';
 
   GlobalToast(massage, Color color1) {
@@ -66,6 +64,7 @@ class _ShowPaymentState extends State<ShowPayment> {
 
     if (response.statusCode == 200) {
       GlobalToast('Successful Deleted', Colors.green);
+      Navigator.pushNamed(context, '/payments');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -94,7 +93,6 @@ class _ShowPaymentState extends State<ShowPayment> {
       cardNumber = widget.cardNumber;
       cvc = widget.cvc;
       bank = widget.bank;
-     
     });
   }
 
@@ -106,108 +104,98 @@ class _ShowPaymentState extends State<ShowPayment> {
           ),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Card Holder Name + ${cardName}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+            ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Card Name = ${cardName}',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
+              color: Colors.green,
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Bank + ${bank}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Bank = ${bank}',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
+              color: Colors.green,
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Total  + ${amount}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  ' Address = ${address}',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
+              color: Colors.green,
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: EdgeInsets.all(1.0),
-                child: Center(
-                  child: Text(
-                    'Your nic + ${nic}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      color: Colors.black,
-                    ),
-                  ),
+            Card(
+              child: ListTile(
+                title: Text(
+                  'Card Number = ${cardNumber}',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
+              color: Colors.green,
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: EdgeInsets.all(1.0),
-                  child: Center(
-                      child: FlatButton(
-                    child: Text("Update"),
-                    onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UpdatePayment(
-                                    id: id,
-                                    nic: nic,
-                                    amount: amount,
-                                    bank: bank,
-                                    cardName: cardName,
-                                    address: address,
-                                    dob: dob,
-                                    cardNumber: cardNumber,
-                                    cvc: cvc,
-                                  
-                                  )))
-                    },
-                  ))),
+            Padding(
+              padding: EdgeInsets.all(8.0),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                  padding: EdgeInsets.all(1.0),
-                  child: Center(
-                      child: FlatButton(
-                    child: Text("Delete"),
-                    onPressed: () => {this.delete()},
-                  ))),
+            FlatButton(
+              child: Text(
+                "Update",
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+              ),
+              color: Colors.blueAccent,
+              height: 40,
+              textColor: Colors.white,
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdatePayment(
+                              id: id,
+                              nic: nic,
+                              amount: amount,
+                              bank: bank,
+                              cardName: cardName,
+                              address: address,
+                              dob: dob,
+                              cardNumber: cardNumber,
+                              cvc: cvc,
+                            )))
+              },
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+            ),
+            FlatButton(
+              child: Text(
+                "Delete",
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12), // <-- Radius
+              ),
+              color: Colors.blueAccent,
+              height: 40,
+              textColor: Colors.white,
+              onPressed: () => {
+                this.delete(),
+              },
             ),
           ],
         ));

@@ -46,7 +46,7 @@ class _AddPaymentState extends State<AddPayment> {
   String expYear = '';
 
   String Api_Url = 'http://localhost:8000/api/addpayment';
-        final LocalStorage storage = new LocalStorage('localstorage_app');
+  final LocalStorage storage = new LocalStorage('localstorage_app');
 
   // toast messages
   GlobalToast(massage, Color color1) {
@@ -93,9 +93,10 @@ class _AddPaymentState extends State<AddPayment> {
 
     // Dispatch action depending upon
     // the server response
-       
+
     if (response.statusCode == 200) {
       GlobalToast('Successfully Added', Colors.green);
+      Navigator.pushNamed(context, '/payments');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -133,10 +134,11 @@ class _AddPaymentState extends State<AddPayment> {
               prefixIcon: Icon(Icons.numbers),
               hintText: 'National ID number'),
         ),
-       
+
         //DOB
         TextField(
           controller: dobController,
+          keyboardType: TextInputType.datetime,
           decoration: InputDecoration(
               labelText: 'Date of Birth',
               prefixIcon: Icon(Icons.password),
@@ -151,7 +153,6 @@ class _AddPaymentState extends State<AddPayment> {
               prefixIcon: Icon(Icons.password),
               hintText: 'Address'),
         ),
-
 
         //debit/credit Card name
         TextField(
@@ -187,6 +188,8 @@ class _AddPaymentState extends State<AddPayment> {
         //expMonth
         TextField(
           controller: expMonthController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
               labelText: 'Exp month',
               prefixIcon: Icon(Icons.password),
@@ -196,6 +199,8 @@ class _AddPaymentState extends State<AddPayment> {
         //expMonth
         TextField(
           controller: expYearController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(
               labelText: 'Exp Year',
               prefixIcon: Icon(Icons.password),
@@ -433,6 +438,30 @@ class _AddPaymentState extends State<AddPayment> {
                         ),
                         content: Text(
                           'Exp Year feild is required',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'OK',
+                              ))
+                        ],
+                      );
+                    });
+              } else if (cvc.length >= 3) {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          'ERROR',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        content: Text(
+                          'Cvc feild is not valid',
                           style: TextStyle(color: Colors.red),
                         ),
                         actions: <Widget>[

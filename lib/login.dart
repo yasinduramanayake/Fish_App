@@ -83,11 +83,8 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      
       appBar: AppBar(
-        
         title: Text("Sign In"),
       ),
       body: Column(
@@ -219,24 +216,25 @@ class Login extends StatelessWidget {
                         });
                   } else {
                     LogUser();
-                    email = '';
-                    password = '';
+                    emailController.clear();
+                    passwordController.clear();
                     if (storage.getItem('role') == "User") {
                       Navigator.pushNamed(context, '/usermenu');
-                    } else {
+                    } else if (storage.getItem('role') == "Admin") {
                       Navigator.pushNamed(context, '/adminmenu');
                     }
                   }
                 },
               ),
-             Padding(      padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0)),
-              Text('Dont you have an account?' ,style: TextStyle(color: Colors.red),),
-              
+              Padding(padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0)),
+              Text(
+                'Dont you have an account?',
+                style: TextStyle(color: Colors.red),
+              ),
               FlatButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
-                
                 child: Text(
                   'Sign Up',
                   style: TextStyle(fontSize: 15.0),

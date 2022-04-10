@@ -88,31 +88,32 @@ class _BuyingListState extends State<BuyingList> {
                       itemCount: list.length,
                       itemBuilder: (context, i) {
                         return Slidable(
-                          key: ValueKey(i),
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
-                            tileColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            title: Text(list[i].name),
-                            subtitle: Text(list[i].name),
-                            trailing: Text(list[i].price.toString()),
-                            onTap: () {
-                            
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ShowBuying(
-                                            name: list[i].name,
-                                            email: list[i].email,
-                                            id: list[i].id,
-                                            quantity: list[i].quantity,
-                                            price: list[i].price,
-                                          )));
-                            },
-                          ),
-                        );
+                            key: ValueKey(i),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                tileColor: Colors.greenAccent,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                title: Text(list[i].name),
+                                subtitle: Text(list[i].name),
+                                trailing: Text(list[i].price.toString()),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ShowBuying(
+                                                name: list[i].name,
+                                                email: list[i].email,
+                                                id: list[i].id,
+                                                quantity: list[i].quantity,
+                                                price: list[i].price,
+                                              )));
+                                },
+                              ),
+                            ));
                       });
 
                   // ScaffoldMessenger.of(context).showSnackBar(

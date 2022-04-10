@@ -4,6 +4,7 @@ import 'dart:convert' show jsonEncode;
 import 'dart:convert';
 import 'dart:convert' show jsonDecode;
 import 'package:fishapp/Payment/paymentGateReg.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -80,6 +81,7 @@ class _UpdateBuyState extends State<UpdateBuy> {
     // the server response
     if (response.statusCode == 200) {
       GlobalToast('Successful Added', Colors.green);
+      Navigator.pushNamed(context, '/buyings');
     } else if (response.statusCode == 422) {
       GlobalToast('Given data is invalid', Colors.red);
     } else if (response.statusCode == 500) {
@@ -117,11 +119,21 @@ class _UpdateBuyState extends State<UpdateBuy> {
       ),
       body: Column(
         children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            "Buy Now",
-            style: TextStyle(fontSize: 30.0),
+          ClipPath(
+            clipper: OvalBottomBorderClipper(),
+            child: Container(
+              height: 120,
+              color: Colors.blue,
+              child: Center(
+                child: Text("Update buying form",
+                    style: TextStyle(
+                        fontSize: 40.0,
+                        fontFamily: 'Lobster',
+                        color: Colors.white)),
+              ),
+            ),
           ),
+          SizedBox(height: 10),
           Form(
               key: formKey,
               child: Column(
@@ -233,10 +245,6 @@ class _UpdateBuyState extends State<UpdateBuy> {
                       else
                         {
                           Update(),
-                          Navigator.pushNamed(context, '/buyings'),
-                          fishnameController.clear(),
-                          quantityController.clear(),
-                          priceController.clear(),
                         }
                     },
                   ),

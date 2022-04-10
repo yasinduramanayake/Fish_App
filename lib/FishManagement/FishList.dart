@@ -66,6 +66,7 @@ class _FishListState extends State<FishList> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Fish List'),
+          
         ),
         bottomNavigationBar: FlatButton(
           onPressed: () {
@@ -113,7 +114,8 @@ class _FishListState extends State<FishList> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               title: Text(list[i].name),
-                              subtitle: Text(list[i].name),
+                              subtitle: Text(list[i].description),
+                               trailing: Text(list[i].price.toString()),
                             ),
                           ),
                           endActionPane: ActionPane(

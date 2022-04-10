@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Usermenu extends StatelessWidget {
   final LocalStorage storage = new LocalStorage('localstorage_app');
+
+  GlobalToast(massage, Color color1) {
+    return Fluttertoast.showToast(
+        msg: massage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: color1,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
   logout() {
     storage.clear();
+    GlobalToast('Successful logged out', Colors.green);
   }
 
   @override
